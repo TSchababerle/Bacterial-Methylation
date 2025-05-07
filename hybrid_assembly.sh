@@ -59,8 +59,8 @@ for ID in "${IDS[@]}"; do
   if [[ -f "$SR_R1_FILE" && -f "$SR_R2_FILE" && -f "$LR_FILE" ]]; then
     echo "Processing $ID: Short reads ($SR_R1_FILE, $SR_R2_FILE), Long reads ($LR_FILE)"
 	
-	#activate general tools environment
-	conda activate genome_assembly_pipeline
+    #activate general tools environment
+    conda activate genome_assembly_pipeline
 	
     #Run FastQC on short reads
     fastqc -t 4 -o "$FASTQC_DIR" "$SR_R1_FILE" "$SR_R2_FILE" &>> "${FASTQC_DIR}/fastqc_debug.log"
@@ -113,20 +113,20 @@ for ID in "${IDS[@]}"; do
     #Annotate assembly with Prokka
     prokka --outdir "${PROKKA_DIR}/${ID}" --prefix "${ID}" "${POLYPOLISH_DIR}/${ID}_polished.fasta" &>> "${PROKKA_DIR}/prokka_debug.log"
     
-	#Deactivate general_assembly_pipeline environment
-	conda deactivate
+    #Deactivate general_assembly_pipeline environment
+    conda deactivate
 	
-	#Activate BUSCO environment
-	conda activate busco_env
+    #Activate BUSCO environment
+    conda activate busco_env
 	
-	#Run BUSCO on raw assemblies
+    #Run BUSCO on raw assemblies
     busco -i "${UNI_DIR}/${ID}/assembly.fasta" -o "${ID}_raw" --out_path "${BUSCO_DIR}/${ID}_raw" &>> "${BUSCO_DIR}/busco_debug.log" -l "/rsrch8/home/hlth_prof/taschababerle/sp25_paper/bacteria_odb10" -m genome -f --offline
 
-	#Run BUSCO on polished assemblies
-	busco -i "${POLYPOLISH_DIR}/${ID}_polished.fasta" -o "${ID}_polished" --out_path "${BUSCO_DIR}/${ID}_polished" &>> "${BUSCO_DIR}/busco_debug.log" -l "/rsrch8/home/hlth_prof/taschababerle/sp25_paper/bacteria_odb10" -m genome -f --offline
+    #Run BUSCO on polished assemblies
+    busco -i "${POLYPOLISH_DIR}/${ID}_polished.fasta" -o "${ID}_polished" --out_path "${BUSCO_DIR}/${ID}_polished" &>> "${BUSCO_DIR}/busco_debug.log" -l "/rsrch8/home/hlth_prof/taschababerle/sp25_paper/bacteria_odb10" -m genome -f --offline
 	
-	#Deactivate busco environment
-	conda deactivate
+    #Deactivate busco environment
+    conda deactivate
    else
      echo "skipping $ID: Missing required files."
    fi
