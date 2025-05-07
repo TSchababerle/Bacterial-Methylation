@@ -1,0 +1,17 @@
+Requirements for Conda environment genome_assembly_pipeline
+fastqc>=0.11.9
+fastp>=0.23.2
+nanoplot>=1.40.2
+unicycler>=0.5.0
+quast>=1.14.6
+polypolish>=0.6.0
+berokka>=0.2
+dnaapler>=1.14.6
+prokka>=1.14.6
+medaka>=2.0.1
+flye>=2.9.1
+
+Requirements for Conda environment busco_env
+busco>=5.8.2
+bacteria_odb10 database : https://busco-data.ezlab.org/v5/data/lineages/bacteria_odb10.2024-01-08.tar.gz
+	-download and provide path in your BUSCO command
