@@ -154,9 +154,9 @@ if __name__ == "__main__":
     os.makedirs("outputs/plots", exist_ok=True)
 
     # Input files
-    ont_csv = "ONT_methylation_sites.csv"
+    ont_csv = "ONT_methylation_sites.tsv"
     ont_gbk = "ONT_genbank.gbk"
-    hyb_csv = "Hybrid_methylation_sites.csv"
+    hyb_csv = "Hybrid_methylation_sites.tsv"
     hyb_gbk = "Hybrid_genbank.gbk"
 
     # Annotation and Summaries
