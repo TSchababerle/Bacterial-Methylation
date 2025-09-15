@@ -1,0 +1,64 @@
+#!/bin/bash
+#BSUB -J dorado
+#BSUB -W 48:00
+#BSUB -gpu num=1:gmem=16:j_exclusive=yes
+#BSUB -q egpu
+#BSUB -o /path/to/output/file/output.txt
+#BSUB -e /path/to/errors/file/errors.txt
+#BSUB -cwd /your/current/working/directory
+#BSUB -n 40
+#BSUB -M 64
+#BSUB -R rusage[mem=64]
+#BSUB -u username@hpc.org
+
+#define directories
+POD5_DIR="/path/to/pod5/files"
+MODELS_DIR="/path/to/dorado/basecalling/models"
+OUTPUT_DIR="/path/to/output/folder"
+RENAMED_DIR="${OUTPUT_DIR}/Renamed_files"
+
+#create directories
+mkdir -p $OUTPUT_DIR $RENAMED_DIR 
+
+#load modules
+module load cuda11.8/toolkit/11.8.0
+module load dorado/0.9.0
+
+#call the methylated bases
+dorado basecaller "${MODELS_DIR}/dna_r10.4.1_e8.2_400bps_sup@v5.0.0" "${POD5_DIR}" --modified-bases-models "${MODELS_DIR}/dna_r10.4.1_e8.2_400bps_sup@v5.0.0_6mA@v1","${MODELS_DIR}/dna_r10.4.1_e8.2_400bps_sup@v5.0.0_4mC_5mC@v1"  > "${OUTPUT_DIR}/meth_calls.bam"
+
+#demultiplex the bam files
+dorado demux --output-dir "${OUTPUT_DIR}" --kit-name SQK-RBK114-24 "${OUTPUT_DIR}/meth_calls.bam"
+
+#define mapping of short-read identifiers to long-read barcodes 
+declare -A 
+ID_MAP=( 
+   ["UT9278_MLa"]="barcode01" 
+   ["UT9278_MLb"]="barcode02" 
+   ["UT9278_IPa"]="barcode03" 
+   ["UT9278_IPb"]="barcode04" 
+   ["UT9278_TSa"]="barcode05" 
+   ["UT9278_TSb"]="barcode06" 
+   ["UT10237_JJa"]="barcode07" 
+   ["UT10237_JJb"]="barcode08" 
+   ["UT9278_OHa"]="barcode09" 
+   ["UT9278_OHb"]="barcode10" 
+   ["UT9278_HWa"]="barcode11" 
+   ["UT9278_HWb"]="barcode12" 
+   ["UT9278_MLc"]="barcode13" 
+   ["UT9278_IPc"]="barcode14" 
+   ["UT10237_TSc"]="barcode15")
+
+# rename and move only those in the ID_MAP
+for replicate in "${!ID_MAP[@]}"; do
+    barcode="${ID_MAP[$replicate]}"
+    old_file="${OUTPUT_DIR}/${barcode}.bam"
+    new_file="${RENAMED_DIR}/${replicate}.bam"
+    
+    if [[ -f "$old_file" ]]; then
+        mv "$old_file" "$new_file"
+        echo "Moved and renamed $old_file -> $new_file"
+    else
+        echo "Warning: $old_file not found"
+    fi
+done
