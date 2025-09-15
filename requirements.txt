@@ -15,3 +15,8 @@ Requirements for Conda environment busco_env
 busco>=5.8.2
 bacteria_odb10 database : https://busco-data.ezlab.org/v5/data/lineages/bacteria_odb10.2024-01-08.tar.gz
 	-download and provide path in your BUSCO command
+
+Requirements for methylome_assembly
+samtools>=1.21
+minimap2>=2.28
+microbemod>=1.0.5
