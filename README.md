@@ -11,6 +11,9 @@ For each of the 66 replicate pairs, the absolute difference in methylated fracti
 # Data Availibility
 The Illumina short read PE FastQ files, ONT long read FastQ files, and ONT uBAM methylation files are available at: https://doi.org/10.5281/zenodo.15555625 
 
-The raw ONT pod5 files are available at: https://drive.google.com/drive/folders/1L6BjogQ0gfElpcgTyIqvbuZPJJWBUGjf?usp=sharing 
+The raw ONT pod5 files are available at: https://doi.org/10.5281/zenodo.17428855
 
 The preprint that this anaysis was performed in is at: doi: https://doi.org/10.1101/2025.06.04.657942 
+
+Sequence data associated with this study is deposited in NCBI SRA under BioProjects: PRJNA1346110 (SRR35808514–
+SRR35808528) and PRJNA1346119 (SRR35808787–SRR35808797).
